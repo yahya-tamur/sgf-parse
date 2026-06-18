@@ -351,7 +351,7 @@ macro_rules! sgf_prop {
                     Self::IT => Some("".to_string()),
                     Self::BM(x) => Some(x.to_sgf()),
                     Self::TE(x) => Some(x.to_sgf()),
-                    Self::DD(x) => Some(x.to_sgf()),
+                    Self::DD(x) => Some(<$pt>::set_to_sgf(x)),
                     Self::LB(x) => Some(x.to_sgf()),
                     Self::LN(x) => Some(x.to_sgf()),
                     Self::MA(x) => Some(x.to_sgf()),

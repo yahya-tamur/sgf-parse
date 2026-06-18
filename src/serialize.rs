@@ -41,7 +41,7 @@ mod test {
 
     #[test]
     fn simple_sgf() {
-        let sgf = "(;VW[aa:ef];SZ[17:19];C[Some comment];B[de]FOO[bar][baz];W[fe])(;B[de];W[ff])";
+        let sgf = "(;TW[aa:ef];SZ[17:19];C[Some comment];B[de]FOO[bar][baz];W[fe])(;B[de];W[ff])";
         let game_trees = parse(sgf).unwrap();
         let result = serialize(&game_trees);
         assert_eq!(result, sgf);

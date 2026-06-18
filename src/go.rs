@@ -157,8 +157,8 @@ impl std::fmt::Display for Prop {
             None => match self {
                 Self::HA(x) => x.to_sgf(),
                 Self::KM(x) => x.to_sgf(),
-                Self::TB(x) => x.to_sgf(),
-                Self::TW(x) => x.to_sgf(),
+                Self::TB(x) => Point::set_to_sgf(x),
+                Self::TW(x) => Point::set_to_sgf(x),
                 _ => panic!("Unimplemented identifier for {:?}", self),
             },
         };
