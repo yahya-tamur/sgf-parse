@@ -2,6 +2,13 @@ use std::collections::HashSet;
 
 use crate::{Color, Double, SimpleText, Text};
 
+pub trait SetToSgf
+where
+    Self: Sized + ToSgf,
+{
+    fn set_to_sgf(collection: &HashSet<Self>) -> String;
+}
+
 pub trait ToSgf {
     fn to_sgf(&self) -> String;
 }

@@ -363,7 +363,14 @@ macro_rules! sgf_prop {
                     Self::FF(x) => Some(x.to_sgf()),
                     Self::GM(x) => Some(x.to_sgf()),
                     Self::ST(x) => Some(x.to_sgf()),
-                    Self::SZ(x) => Some(x.to_sgf()),
+                    Self::SZ(x) => Some({
+                        let (a, b) = x;
+                            if a == b {
+                                a.to_string()
+                            } else {
+                                format!("{}:{}", a, b)
+                            }
+                    }),
                     Self::AN(x) => Some(x.to_sgf()),
                     Self::BR(x) => Some(x.to_sgf()),
                     Self::BT(x) => Some(x.to_sgf()),
@@ -391,7 +398,7 @@ macro_rules! sgf_prop {
                     Self::WL(x) => Some(x.to_sgf()),
                     Self::FG(x) => Some(x.to_sgf()),
                     Self::PM(x) => Some(x.to_sgf()),
-                    Self::VW(x) => Some(x.to_sgf()),
+                    Self::VW(x) => Some(<$pt>::set_to_sgf(x)),
                     Self::Unknown(_, x) => Some(x.to_sgf()),
                     Self::Invalid(_, x) => Some(x.to_sgf()),
                     #[allow(unreachable_patterns)]
@@ -454,13 +461,11 @@ macro_rules! sgf_prop {
                     match prop.property_type() {
                         Some(PropertyType::Move) => move_node = true,
                         Some(PropertyType::Setup) => setup_node = true,
-                        Some(PropertyType::Root) => {
-                            if !is_root {
-                                return Err(InvalidNodeError::UnexpectedRootProperties(format!(
-                                            "{:?}",
-                                            properties
-                                )));
-                            }
+                        Some(PropertyType::Root) if !is_root => {
+                            return Err(InvalidNodeError::UnexpectedRootProperties(format!(
+                                "{:?}",
+                                properties
+                            )))
                         }
                         _ => {}
                     }
