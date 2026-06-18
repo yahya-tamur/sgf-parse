@@ -43,9 +43,14 @@ impl<T: ToSgf> ToSgf for Option<T> {
     }
 }
 
-impl ToSgf for u8 {
+impl ToSgf for (u8, u8) {
     fn to_sgf(&self) -> String {
-        self.to_string()
+        let (a, b) = self;
+        if a == b {
+            a.to_string()
+        } else {
+            format!("{}:{}", a, b)
+        }
     }
 }
 

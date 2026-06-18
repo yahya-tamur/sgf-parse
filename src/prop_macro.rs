@@ -363,14 +363,7 @@ macro_rules! sgf_prop {
                     Self::FF(x) => Some(x.to_sgf()),
                     Self::GM(x) => Some(x.to_sgf()),
                     Self::ST(x) => Some(x.to_sgf()),
-                    Self::SZ(x) => Some({
-                        let (a, b) = x;
-                            if a == b {
-                                a.to_string()
-                            } else {
-                                format!("{}:{}", a, b)
-                            }
-                    }),
+                    Self::SZ(x) => Some(x.to_sgf()),
                     Self::AN(x) => Some(x.to_sgf()),
                     Self::BR(x) => Some(x.to_sgf()),
                     Self::BT(x) => Some(x.to_sgf()),
