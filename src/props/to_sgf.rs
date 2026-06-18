@@ -4,7 +4,7 @@ use crate::{Color, Double, SimpleText, Text};
 
 pub trait SetToSgf
 where
-    Self: Sized + ToSgf,
+    Self: Sized,
 {
     fn set_to_sgf(collection: &HashSet<Self>) -> String;
 }
