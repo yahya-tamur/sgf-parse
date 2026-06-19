@@ -202,26 +202,24 @@ impl ToSgf for Point {
 
 impl SetToSgf for Point {
     fn set_to_sgf(collection: &HashSet<Self>) -> String {
-        if collection.is_empty() {
-            return "".to_string();
+        if collection.len() >= 2 {
+            let min_x = collection.iter().map(|p| p.x).min().unwrap();
+            let max_x = collection.iter().map(|p| p.x).max().unwrap();
+            let min_y = collection.iter().map(|p| p.y).min().unwrap();
+            let max_y = collection.iter().map(|p| p.y).max().unwrap();
+            if collection.len() == ((max_x + 1 - min_x) * (max_y + 1 - min_y)) as usize {
+                return format!(
+                    "{}:{}",
+                    (Point { x: min_x, y: min_y }).to_sgf(),
+                    (Point { x: max_x, y: max_y }).to_sgf()
+                );
+            }
         }
-        let min_x = collection.iter().map(|p| p.x).min().unwrap();
-        let max_x = collection.iter().map(|p| p.x).max().unwrap();
-        let min_y = collection.iter().map(|p| p.y).min().unwrap();
-        let max_y = collection.iter().map(|p| p.y).max().unwrap();
-        if collection.len() == ((max_x + 1 - min_x) * (max_y + 1 - min_y)) as usize {
-            format!(
-                "{}:{}",
-                (Point { x: min_x, y: min_y }).to_sgf(),
-                (Point { x: max_x, y: max_y }).to_sgf()
-            )
-        } else {
-            collection
-                .iter()
-                .map(|x| x.to_sgf())
-                .collect::<Vec<String>>()
-                .join("][")
-        }
+        collection
+            .iter()
+            .map(|x| x.to_sgf())
+            .collect::<Vec<String>>()
+            .join("][")
     }
 }
 
@@ -298,5 +296,13 @@ mod tests {
         let lhs: String = lhs.into_iter().collect();
 
         assert_eq!(lhs, "[[[[]]]]aaaabbbbcc");
+    }
+
+    #[test]
+    fn single_point_compression() {
+        let mut set = HashSet::new();
+        assert_eq!(Point::set_to_sgf(&set), "");
+        set.insert(Point { x: 3, y: 4 });
+        assert_eq!(Point::set_to_sgf(&set), "de");
     }
 }
